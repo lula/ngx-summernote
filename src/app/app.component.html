@@ -1,0 +1,10 @@
+<h3>Summernote editor</h3>
+<div [formGroup]="form">
+  <div formControlName="html" [ngxSummernote]="config"></div>
+</div>
+
+<h3>HTML</h3>
+<div [innerHTML]="sanitizedHtml"></div>
+
+<h3>Code</h3>
+<pre>{{form.get('html').value}}</pre>
