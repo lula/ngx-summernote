@@ -1,12 +1,15 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { NgxSummernoteDirective } from './ngx-summernote.directive';
+import { NgxSummernoteViewDirective } from './ngx-summernote-view.directive';
 
 @NgModule({
   declarations: [
-    NgxSummernoteDirective
+    NgxSummernoteDirective,
+    NgxSummernoteViewDirective
   ],
   exports: [
-    NgxSummernoteDirective
+    NgxSummernoteDirective,
+    NgxSummernoteViewDirective
   ]
 })
 export class NgxSummernoteModule {

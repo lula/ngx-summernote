@@ -4,7 +4,7 @@
 </div>
 
 <h3>HTML</h3>
-<div [innerHTML]="sanitizedHtml"></div>
+<div [ngxSummernoteView]="form.get('html').value"></div>
 
 <h3>Code</h3>
 <pre>{{form.get('html').value}}</pre>
