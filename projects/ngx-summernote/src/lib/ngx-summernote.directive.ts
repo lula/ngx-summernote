@@ -42,8 +42,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
             ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
             ['fontsize', ['fontname', 'fontsize', 'color']],
             ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
-            ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-            ['fullscreen', ['fullscreen']]
+            ['insert', ['table', 'picture', 'link', 'video', 'hr']]
         ],
         fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
     };
