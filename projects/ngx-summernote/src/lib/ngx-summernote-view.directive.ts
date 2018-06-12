@@ -10,7 +10,7 @@ declare var $;
 })
 export class NgxSummernoteViewDirective implements AfterViewInit {
     @Input() set ngxSummernoteView(content: string) {
-        this._element.innerHTML = content;
+        this._element.innerHTML = content || '';
     }
 
     private _element: any;

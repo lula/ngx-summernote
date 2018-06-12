@@ -21,7 +21,7 @@ export class AppComponent {
     private sanitizer: DomSanitizer
   ) {
     this.form = new FormGroup({
-      html: new FormControl('Hello! This is an <strong>initial</strong> html content')
+      html: new FormControl()
     });
   }
 }
