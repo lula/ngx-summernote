@@ -10,6 +10,20 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Editor
 
+Add add JQuery and Summernote scripts and styles in angular.json file:
+
+```
+"styles": [
+	...
+	"node_modules/summernote/dist/summernote-lite.css"
+],
+"scripts": [
+	...
+	"node_modules/jquery/dist/jquery.min.js",
+	"node_modules/summernote/dist/summernote-lite.js"
+]
+```
+
 Use `[ngxSummernote]` directive on an element to init Summernote editor:
 
 ```
