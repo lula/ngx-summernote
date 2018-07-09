@@ -1,6 +1,11 @@
 {
   "name": "ngx-summernote-lib",
   "version": "0.0.0",
+  "keywords": [
+    "summernote",
+    "angular",
+    "angular6"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
