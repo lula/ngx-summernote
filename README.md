@@ -8,6 +8,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 `src` contains an example application. Run `ng serve` to test.
 
+## Installation
+
+Install ngx-summernote and dependencies:
+
+`npm install --save summernote ngx-summernote`
+
 ## Editor
 
 Add add JQuery and Summernote scripts and styles in angular.json file:

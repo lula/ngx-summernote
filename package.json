@@ -1,6 +1,11 @@
 {
   "name": "ngx-summernote-lib",
   "version": "0.0.0",
+  "keywords": [
+    "summernote",
+    "angular",
+    "angular6"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +14,6 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^6.0.0",
     "@angular/common": "^6.0.0",
