@@ -1,6 +1,6 @@
 import {
     Directive, ElementRef, Input, Output,
-    EventEmitter, forwardRef, NgZone, OnInit, OnDestroy
+    EventEmitter, forwardRef, NgZone, OnInit, OnDestroy, OnChanges
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -8,14 +8,14 @@ declare var $;
 
 @Directive({
     // tslint:disable-next-line:directive-selector
-    selector: '[ngxSummernote]',
+    selector: '[ngxSummernote], [ngxSummernoteDisabled]',
     providers: [{
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => NgxSummernoteDirective),
         multi: true
     }]
 })
-export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnDestroy {
+export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
     @Input() set ngxSummernote(options: any) {
         this._options = Object.assign(this._options, options);
     }
@@ -23,11 +23,14 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
     @Input() set summernoteModel(content: any) {
         this.updateEditor(content);
     }
+
     // summernoteModel directive as output: update model if editor contentChanged
     @Output() summernoteModelChange: EventEmitter<any> = new EventEmitter<any>();
 
     // summernoteInit directive as output: send manual editor initialization
     @Output() summernoteInit: EventEmitter<Object> = new EventEmitter<Object>();
+
+    @Input() ngxSummernoteDisabled: boolean;
 
     private _options: any = {
         immediateAngularModelUpdate: false,
@@ -56,10 +59,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
     private _oldModel: string = null;
     private _editorInitialized: boolean;
 
-    constructor(
-        el: ElementRef,
-        private zone: NgZone
-    ) {
+    constructor(el: ElementRef, private zone: NgZone) {
         const element: any = el.nativeElement;
 
         // check if the element is a special tag
@@ -80,6 +80,19 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
         } else {
             // TODO not sure it works now...
             this.generateManualController();
+        }
+    }
+
+    ngOnChanges(changes) {
+        if (this._editorInitialized && changes) {
+            if (changes.ngxSummernoteDisabled && !changes.ngxSummernoteDisabled.firstChange &&
+                changes.ngxSummernoteDisabled.currentValue !== changes.ngxSummernoteDisabled.previousValue) {
+                if (changes.ngxSummernoteDisabled.currentValue) {
+                    this._$element.summernote('disable');
+                } else {
+                    this._$element.summernote('enable');
+                }
+            }
         }
     }
 
@@ -189,6 +202,9 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
         // init editor
         this.zone.runOutsideAngular(() => {
             this._editor = this._$element.summernote(this._options).data('summernote').$note;
+            if (this.ngxSummernoteDisabled) {
+                this._$element.summernote('disable');
+            }
         });
 
         this._editorInitialized = true;

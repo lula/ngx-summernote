@@ -1,6 +1,12 @@
 <h3>Summernote editor</h3>
+
+<div>
+  <button (click)="enableEditor()" [disabled]="!editorDisabled">Enable</button>
+  <button (click)="disableEditor()" [disabled]="editorDisabled">Disable</button>
+</div>
+
 <div [formGroup]="form">
-  <div formControlName="html" [ngxSummernote]="config"></div>
+  <div formControlName="html" [ngxSummernote]="config" [ngxSummernoteDisabled]="editorDisabled"></div>
 </div>
 
 <h3>HTML</h3>

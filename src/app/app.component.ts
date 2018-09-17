@@ -13,6 +13,8 @@ export class AppComponent {
     height: '200px'
   };
 
+  editorDisabled = true;
+
   get sanitizedHtml() {
     return this.sanitizer.bypassSecurityTrustHtml(this.form.get('html').value);
   }
@@ -23,5 +25,13 @@ export class AppComponent {
     this.form = new FormGroup({
       html: new FormControl()
     });
+  }
+
+  enableEditor() {
+    this.editorDisabled = false;
+  }
+
+  disableEditor() {
+    this.editorDisabled = true;
   }
 }
