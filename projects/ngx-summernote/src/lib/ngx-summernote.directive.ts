@@ -3,7 +3,10 @@ import {
     EventEmitter, forwardRef, NgZone, OnInit, OnDestroy, OnChanges
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { throwError, of } from 'rxjs';
 declare var $;
 
 @Directive({
@@ -26,6 +29,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
 
     // summernoteModel directive as output: update model if editor contentChanged
     @Output() summernoteModelChange: EventEmitter<any> = new EventEmitter<any>();
+    @Output() imageUpload: EventEmitter<any> = new EventEmitter<any>();
 
     // summernoteInit directive as output: send manual editor initialization
     @Output() summernoteInit: EventEmitter<Object> = new EventEmitter<Object>();
@@ -38,6 +42,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
         placeholder: '',
         tabsize: 2,
         height: 100,
+        uploadImagePath: '',
         toolbar: [
             // [groupName, [list of button]]
             ['misc', ['codeview', 'undo', 'redo']],
@@ -47,7 +52,10 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
             ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
             ['insert', ['table', 'picture', 'link', 'video', 'hr']]
         ],
-        fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
+        fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times'],
+        callbacks: {
+            onImageUpload: (files) => this.uploadImage(files)
+        }
     };
 
     private SPECIAL_TAGS: string[] = ['img', 'button', 'input', 'a'];
@@ -59,7 +67,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
     private _oldModel: string = null;
     private _editorInitialized: boolean;
 
-    constructor(el: ElementRef, private zone: NgZone) {
+    constructor(el: ElementRef, private zone: NgZone, public http: HttpClient) {
         const element: any = el.nativeElement;
 
         // check if the element is a special tag
@@ -82,7 +90,43 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
             this.generateManualController();
         }
     }
+    async uploadImage(files) {
+        this.imageUpload.emit({ status: 'on' });
+        const data = new FormData();
+        data.append('image', files[0]);
+        if (this._options.uploadImagePath) {
+            this.http.post(this._options.uploadImagePath, data)
+                .pipe(
+                    map((response: { path: string }) => response && typeof response.path === 'string' && response.path),
+                    catchError(e => {
+                        throwError('An error occured while uploading' + e);
+                        return of('');
+                    }))
+                .subscribe(dataIn => {
+                    if (dataIn) {
+                        this._$element.summernote('insertImage', dataIn);
+                        this.imageUpload.emit({ status: 'off' });
+                    } else {
+                        this.insertNormally(files);
+                    }
+                }, (e) => {
+                    this.insertNormally(files);
+                });
+        } else {
+            this.insertNormally(files);
+        }
 
+
+    }
+    insertNormally(files) {
+        const reader = new FileReader();
+        reader.readAsDataURL(files[0]);
+        reader.onload = () => {
+            this._$element.summernote('insertImage', reader.result);
+            this.imageUpload.emit({ status: 'off', implemeted: 'base64' });
+        };
+        reader.onerror = error => console.error(error);
+    }
     ngOnChanges(changes) {
         if (this._editorInitialized && changes) {
             if (changes.ngxSummernoteDisabled && !changes.ngxSummernoteDisabled.firstChange &&
