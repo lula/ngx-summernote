@@ -8,7 +8,7 @@ declare var $;
 
 @Directive({
     // tslint:disable-next-line:directive-selector
-    selector: '[ngxSummernote], [ngxSummernoteDisabled]',
+    selector: '[ngxSummernote]',
     providers: [{
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => NgxSummernoteDirective),
