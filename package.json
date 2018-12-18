@@ -4,7 +4,8 @@
   "keywords": [
     "summernote",
     "angular",
-    "angular6"
+    "angular6",
+    "angular7"
   ],
   "scripts": {
     "ng": "ng",
