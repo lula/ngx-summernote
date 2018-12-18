@@ -1,10 +1,10 @@
 {
   "name": "ngx-summernote",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "peerDependencies": {
-    "@angular/common": "^6.0.0",
-    "@angular/core": "^6.0.0",
-    "@angular/forms": "^6.0.0",
+    "@angular/common": ">=6.0.0 <=8.0.0",
+    "@angular/core": ">=6.0.0 <=8.0.0",
+    "@angular/forms": ">=6.0.0 <=8.0.0",
     "summernote": "^0.8.10"
   }
 }
