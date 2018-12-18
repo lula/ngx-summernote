@@ -93,4 +93,4 @@ API call response is expected to be like:
 }
 ```
 
-If the reponse does not have the above format, then the image is inserted as data URL.
+If the reponse does not follow the above structure then the image is inserted as data URL.
