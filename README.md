@@ -75,13 +75,13 @@ Use `[ngxSummernoteView]` directive on an element to set innerHTML of an element
 <div [ngxSummernoteView]="content"></div>
 ```
 
-## Upload to server instead of inserting Base64
+## Upload images to server instead of inserting Base64 in 
 
 Use `uploadImagePath` option in config:
 
 ```javascipt
 config = {
-  uploadImagePath: 'example.com' // Inserts base 64 if for some reason the upload fails
+  uploadImagePath: 'http://example.com/upload' // API URL to upload image
 };
 ```
 
@@ -89,6 +89,6 @@ API call response is expected to be like:
 
 ```javascript
 {
-  path: 'the-path-of-the-image' // http://example.com/image-path.png
+  path: 'the path of the image' // http://example.com/image-path.png
 }
 ```
