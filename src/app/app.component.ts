@@ -10,7 +10,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class AppComponent {
   form: FormGroup;
   config = {
-    height: '200px'
+    height: '200px',
+    uploadImagePath: 'example.com' // Check network to test if fails
   };
 
   editorDisabled = true;

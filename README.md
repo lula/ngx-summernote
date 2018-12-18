@@ -43,6 +43,7 @@ Summernote is initialized with the following deafult config:
 	placeholder: '',
 	tabsize: 2,
 	height: 100,
+	uploadImagePath: '',    
 	toolbar: [
 	    // [groupName, [list of button]]
 	    ['misc', ['codeview', 'undo', 'redo']],
@@ -70,4 +71,20 @@ Use `[ngxSummernoteView]` directive on an element to set innerHTML of an element
 
 ```
 <div [ngxSummernoteView]="content"></div>
+```
+
+## Upload to server instead of inserting Base 64
+
+Add an extra option to the config viz:
+
+```
+config = {
+	uploadImagePath: 'example.com' // Inserts base 64 if for some reason the upload fails
+};
+```
+###The response of API call must be like this:
+```
+{
+	path: 'the-path-of-the-image' // example.com/image-path.png
+}
 ```
