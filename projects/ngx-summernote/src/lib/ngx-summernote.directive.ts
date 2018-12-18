@@ -67,7 +67,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
     private _oldModel: string = null;
     private _editorInitialized: boolean;
 
-    constructor(el: ElementRef, private zone: NgZone, public http: HttpClient) {
+    constructor(el: ElementRef, private zone: NgZone, private http: HttpClient) {
         const element: any = el.nativeElement;
 
         // check if the element is a special tag
@@ -90,43 +90,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
             this.generateManualController();
         }
     }
-    async uploadImage(files) {
-        this.imageUpload.emit({ status: 'on' });
-        const data = new FormData();
-        data.append('image', files[0]);
-        if (this._options.uploadImagePath) {
-            this.http.post(this._options.uploadImagePath, data)
-                .pipe(
-                    map((response: { path: string }) => response && typeof response.path === 'string' && response.path),
-                    catchError(e => {
-                        throwError('An error occured while uploading' + e);
-                        return of('');
-                    }))
-                .subscribe(dataIn => {
-                    if (dataIn) {
-                        this._$element.summernote('insertImage', dataIn);
-                        this.imageUpload.emit({ status: 'off' });
-                    } else {
-                        this.insertNormally(files);
-                    }
-                }, (e) => {
-                    this.insertNormally(files);
-                });
-        } else {
-            this.insertNormally(files);
-        }
 
-
-    }
-    insertNormally(files) {
-        const reader = new FileReader();
-        reader.readAsDataURL(files[0]);
-        reader.onload = () => {
-            this._$element.summernote('insertImage', reader.result);
-            this.imageUpload.emit({ status: 'off', implemeted: 'base64' });
-        };
-        reader.onerror = error => console.error(error);
-    }
     ngOnChanges(changes) {
         if (this._editorInitialized && changes) {
             if (changes.ngxSummernoteDisabled && !changes.ngxSummernoteDisabled.firstChange &&
@@ -303,12 +267,48 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
     // send manual editor initialization
     // TODO not sure it works now...
     private generateManualController() {
-        const self = this;
         const controls = {
             initialize: this.createEditor.bind(this),
             destroy: this.destroyEditor.bind(this),
             getEditor: this.getEditor.bind(this),
         };
         this.summernoteInit.emit(controls);
+    }
+
+    private async uploadImage(files) {
+        const data = new FormData();
+        this.imageUpload.emit({ uploading: true });
+        data.append('image', files[0]);
+        if (this._options.uploadImagePath) {
+            this.http.post(this._options.uploadImagePath, data)
+                .pipe(
+                    map((response: { path: string }) => response && typeof response.path === 'string' && response.path),
+                    catchError(e => {
+                        throwError('An error occured while uploading' + e);
+                        return of('');
+                    }))
+                .subscribe(dataIn => {
+                    if (dataIn) {
+                        this._$element.summernote('insertImage', dataIn);
+                        this.imageUpload.emit({ uploading: false });
+                    } else {
+                        this.insertFromDataURL(files);
+                    }
+                }, (e) => {
+                    this.insertFromDataURL(files);
+                });
+        } else {
+            this.insertFromDataURL(files);
+        }
+    }
+
+    insertFromDataURL(files) {
+        const reader = new FileReader();
+        reader.readAsDataURL(files[0]);
+        reader.onload = () => {
+            this._$element.summernote('insertImage', reader.result);
+            this.imageUpload.emit({ uploading: false, encoding: 'base64' });
+        };
+        reader.onerror = error => console.error(error);
     }
 }

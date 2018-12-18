@@ -1,6 +1,6 @@
 # NgxSummernote
 
-[Summernote](https://github.com/summernote/summernote) wysiwyg editor for Angular 6.
+[Summernote](https://github.com/summernote/summernote) wysiwyg editor for Angular 6/7.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
@@ -12,56 +12,58 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Install ngx-summernote and dependencies:
 
-`npm install --save summernote ngx-summernote`
+`npm install --save ngx-summernote summernote jquery`
 
 ## Editor
 
 Add add JQuery and Summernote scripts and styles in angular.json file:
 
-```
+```json
 "styles": [
-	...
-	"node_modules/summernote/dist/summernote-lite.css"
+  ...
+  "node_modules/summernote/dist/summernote-lite.css"
 ],
 "scripts": [
-	...
-	"node_modules/jquery/dist/jquery.min.js",
-	"node_modules/summernote/dist/summernote-lite.js"
+  ...
+  "node_modules/jquery/dist/jquery.min.js",
+  "node_modules/summernote/dist/summernote-lite.js"
 ]
 ```
 
 Use `[ngxSummernote]` directive on an element to init Summernote editor:
 
-```
+```html
 <div [ngxSummernote]></div>
 ```
 
-Summernote is initialized with the following deafult config: 
+Summernote is initialized with the following deafult config:
 
-```
+```javascript
 {
-	placeholder: '',
-	tabsize: 2,
-	height: 100,
-	uploadImagePath: '',    
-	toolbar: [
-	    // [groupName, [list of button]]
-	    ['misc', ['codeview', 'undo', 'redo']],
-	    ['style', ['bold', 'italic', 'underline', 'clear']],
-	    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-	    ['fontsize', ['fontname', 'fontsize', 'color']],
-	    ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
-	    ['insert', ['table', 'picture', 'link', 'video', 'hr']]
-	],
-	fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
+  placeholder: '',
+  tabsize: 2,
+  height: 100,
+  uploadImagePath: '',
+  toolbar: [
+      // [groupName, [list of button]]
+      ['misc', ['codeview', 'undo', 'redo']],
+      ['style', ['bold', 'italic', 'underline', 'clear']],
+      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+      ['fontsize', ['fontname', 'fontsize', 'color']],
+      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
+      ['insert', ['table', 'picture', 'link', 'video', 'hr']]
+  ],
+  fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
 }
 ```
 
-You may also configure Summernote with your own config: 
+You may also configure Summernote with your own summernote config:
 
+```html
+<div [ngxSummernote]="config"></div>
 ```
-<div [ngxSummernote]="myConf"></div>
-```
+
+The provided config will be merged with the default one.
 
 See Summernote available initialization options [here](https://summernote.org/deep-dive/#initialization-options).
 
@@ -69,22 +71,24 @@ See Summernote available initialization options [here](https://summernote.org/de
 
 Use `[ngxSummernoteView]` directive on an element to set innerHTML of an element:
 
-```
+```html
 <div [ngxSummernoteView]="content"></div>
 ```
 
-## Upload to server instead of inserting Base 64
+## Upload to server instead of inserting Base64
 
-Add an extra option to the config viz:
+Use `uploadImagePath` option in config:
 
-```
+```javascipt
 config = {
-	uploadImagePath: 'example.com' // Inserts base 64 if for some reason the upload fails
+  uploadImagePath: 'example.com' // Inserts base 64 if for some reason the upload fails
 };
 ```
-###The response of API call must be like this:
-```
+
+API call response is expected to be like:
+
+```javascript
 {
-	path: 'the-path-of-the-image' // example.com/image-path.png
+  path: 'the-path-of-the-image' // http://example.com/image-path.png
 }
 ```

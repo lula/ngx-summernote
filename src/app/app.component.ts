@@ -11,10 +11,9 @@ export class AppComponent {
   form: FormGroup;
   config = {
     height: '200px',
-    uploadImagePath: 'example.com' // Check network to test if fails
+    uploadImagePath: '/api/upload'
   };
-
-  editorDisabled = true;
+  editorDisabled = false;
 
   get sanitizedHtml() {
     return this.sanitizer.bypassSecurityTrustHtml(this.form.get('html').value);
