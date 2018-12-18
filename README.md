@@ -92,3 +92,5 @@ API call response is expected to be like:
   path: 'the path of the image' // http://example.com/image-path.png
 }
 ```
+
+If the reponse does not have the above format, then the image is inserted as data URL.
