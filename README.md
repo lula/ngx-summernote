@@ -75,7 +75,7 @@ Use `[ngxSummernoteView]` directive on an element to set innerHTML of an element
 <div [ngxSummernoteView]="content"></div>
 ```
 
-## Upload images to server instead of inserting Base64 in 
+## Upload images to server instead of inserting Base64 in HTML
 
 Use `uploadImagePath` option in config:
 
