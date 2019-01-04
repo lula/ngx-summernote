@@ -34,6 +34,8 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
     // summernoteInit directive as output: send manual editor initialization
     @Output() summernoteInit: EventEmitter<Object> = new EventEmitter<Object>();
 
+    @Output() blur: EventEmitter<any> = new EventEmitter<any>();
+
     @Input() ngxSummernoteDisabled: boolean;
 
     private _options: any = {
@@ -187,6 +189,13 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
             setTimeout(function () {
                 self.updateModel(contents);
             }, 0);
+        });
+
+        this._$element.on('summernote.blur', function () {
+          setTimeout(function () {
+            self.onTouched();
+            self.blur.emit();
+          }, 0);
         });
 
         if (this._options.immediateAngularModelUpdate) {
