@@ -34,4 +34,8 @@ export class AppComponent {
   disableEditor() {
     this.editorDisabled = true;
   }
+
+  onBlur() {
+    console.log('Blur');
+  }
 }
