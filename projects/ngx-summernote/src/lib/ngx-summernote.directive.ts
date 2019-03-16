@@ -38,6 +38,8 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
 
     @Input() ngxSummernoteDisabled: boolean;
 
+    @Input() ngxSummernoteCustomButtons: string[] = [];
+
     private _options: any = {
         immediateAngularModelUpdate: false,
         angularIgnoreAttrs: null,
@@ -52,12 +54,14 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
             ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
             ['fontsize', ['fontname', 'fontsize', 'color']],
             ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
-            ['insert', ['table', 'picture', 'link', 'video', 'hr']]
+            ['insert', ['table', 'picture', 'link', 'video', 'hr']],
+            ['customButtons', this.ngxSummernoteCustomButtons]
         ],
         fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times'],
         callbacks: {
             onImageUpload: (files) => this.uploadImage(files)
-        }
+        },
+        buttons: {}
     };
 
     private SPECIAL_TAGS: string[] = ['img', 'button', 'input', 'a'];
@@ -83,6 +87,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
     }
 
     ngOnInit() {
+        this._options.toolbar
         // check if output summernoteInit is present. Maybe observers is private and
         // should not be used?? TODO how to better test that an output directive is present.
         if (!this.summernoteInit.observers.length) {
@@ -192,10 +197,10 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
         });
 
         this._$element.on('summernote.blur', function () {
-          setTimeout(function () {
-            self.onTouched();
-            self.blur.emit();
-          }, 0);
+            setTimeout(function () {
+                self.onTouched();
+                self.blur.emit();
+            }, 0);
         });
 
         if (this._options.immediateAngularModelUpdate) {
@@ -218,6 +223,8 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
 
         // init editor
         this.zone.runOutsideAngular(() => {
+            const customButtons = this._options.toolbar.find(btns => btns[0] === 'customButtons');
+            customButtons[1] = this.ngxSummernoteCustomButtons
             this._editor = this._$element.summernote(this._options).data('summernote').$note;
             if (this.ngxSummernoteDisabled) {
                 this._$element.summernote('disable');
@@ -320,4 +327,5 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
         };
         reader.onerror = error => console.error(error);
     }
+
 }

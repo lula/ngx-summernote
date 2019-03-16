@@ -6,7 +6,11 @@
 </div>
 
 <div [formGroup]="form">
-  <div formControlName="html" [ngxSummernote]="config" [ngxSummernoteDisabled]="editorDisabled" (blur)="onBlur()"></div>
+  <div formControlName="html" 
+       [ngxSummernote]="config"
+       [ngxSummernoteDisabled]="editorDisabled"
+       [ngxSummernoteCustomButtons]="['test']"
+       (blur)="onBlur()"></div>
 </div>
 
 <h3>HTML</h3>
