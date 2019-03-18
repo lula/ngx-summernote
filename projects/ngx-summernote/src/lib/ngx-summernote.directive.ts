@@ -49,7 +49,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
         uploadImagePath: '',
         toolbar: [
             // [groupName, [list of button]]
-            ['misc', ['codeview', 'undo', 'redo']],
+            ['misc', ['codeview', 'undo', 'redo','codeBlock']],
             ['style', ['bold', 'italic', 'underline', 'clear']],
             ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
             ['fontsize', ['fontname', 'fontsize', 'color']],
@@ -61,7 +61,9 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
         callbacks: {
             onImageUpload: (files) => this.uploadImage(files)
         },
-        buttons: {}
+        buttons: {
+            codeBlock: this.codeBlockButton()
+        }
     };
 
     private SPECIAL_TAGS: string[] = ['img', 'button', 'input', 'a'];
@@ -315,6 +317,33 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
                 });
         } else {
             this.insertFromDataURL(files);
+        }
+    }
+
+    codeBlockButton() {
+        return function (context) {
+            const ui = $.summernote.ui;
+            // create button
+            const button = ui.button({
+                contents: 'Code block',
+                tooltip: 'Add raw code',
+                click: function () {
+                    let selectedText = null;
+                    // The below code will copy the selected block and add it into our code=block
+                    if (window.getSelection) {
+                        selectedText = window.getSelection().toString().replace(/^\s+|\s+$/g, '');
+                    }
+                    const codeText = selectedText ? selectedText : `Place your code here.`;
+
+                    const codeBlock = '<pre style="font-family: Menlo, Monaco, Consolas, &quot;Courier New&quot;, monospace; font-size: 14px; padding: 28px 24px; margin-bottom: 10px; line-height: 1.42857; word-break: break-all; overflow-wrap: break-word; background-color: rgb(250, 251, 253); border: 1px solid rgb(234, 236, 240); border-radius: 4px;"><font color="#60a0b0"><span style="white-space: pre-wrap;"><i>'+
+                                    codeText+
+                                    '</i></span></font></pre>';
+
+                    context.invoke('editor.pasteHTML', codeBlock);
+                }
+            });
+
+            return button.render();   // return button as jquery object
         }
     }
 

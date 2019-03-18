@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgxSummernoteModule } from 'ngx-summernote';
+import { NgxSummernoteModule } from '../../projects/ngx-summernote/src/public_api';
 
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';

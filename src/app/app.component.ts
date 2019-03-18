@@ -14,11 +14,8 @@ export class AppComponent {
 
   config: any = {
     height: '200px',
-      uploadImagePath: '/api/upload',
-      buttons: {
-        test: this.customButton()
-      }
-  };
+      uploadImagePath: '/api/upload'
+   };
   
   editorDisabled = false;
 
@@ -47,19 +44,5 @@ export class AppComponent {
 
   onBlur() {
     console.log('Blur');
-  }
-
-  customButton() {
-    return (context) => {
-      const ui = $.summernote.ui;
-      const button = ui.button({
-        contents: 'Code block',
-        tooltip: 'Code block',
-        click: function () {
-          context.invoke('editor.pasteHTML', '<pre><code class="html">Place code here</code></pre>');
-        }
-      });
-      return button.render();
-    }
   }
 }
