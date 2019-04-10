@@ -1,12 +1,20 @@
+import { HttpClient } from '@angular/common/http';
 import {
-    Directive, ElementRef, Input, Output,
-    EventEmitter, forwardRef, NgZone, OnInit, OnDestroy, OnChanges
+    Directive,
+    ElementRef,
+    EventEmitter,
+    forwardRef,
+    Input,
+    NgZone,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
-import { throwError, of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
 declare var $;
 
 @Directive({
@@ -20,6 +28,9 @@ declare var $;
 })
 export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
     @Input() set ngxSummernote(options: any) {
+        if (options.buttons) {
+            Object.assign(options.buttons, this._options.buttons);
+        }
         this._options = Object.assign(this._options, options);
     }
     // summernoteModel directive as input: store initial editor content
@@ -38,8 +49,6 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
 
     @Input() ngxSummernoteDisabled: boolean;
 
-    @Input() ngxSummernoteCustomButtons: string[] = [];
-
     private _options: any = {
         immediateAngularModelUpdate: false,
         angularIgnoreAttrs: null,
@@ -49,19 +58,20 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
         uploadImagePath: '',
         toolbar: [
             // [groupName, [list of button]]
-            ['misc', ['codeview', 'undo', 'redo']],
-            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
+            // ['style', ['bold', 'italic', 'underline', 'clear']],
             ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
             ['fontsize', ['fontname', 'fontsize', 'color']],
             ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
             ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-            ['customButtons', this.ngxSummernoteCustomButtons]
         ],
         fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times'],
         callbacks: {
             onImageUpload: (files) => this.uploadImage(files)
         },
-        buttons: {}
+        buttons: {
+            codeBlock: this.codeBlockButton()
+        }
     };
 
     private SPECIAL_TAGS: string[] = ['img', 'button', 'input', 'a'];
@@ -145,6 +155,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
 
     // update model if editor contentChanged
     private updateModel(content?: any) {
+        // console.log("update model", content)
         this.zone.run(() => {
             let modelContent: any = null;
 
@@ -223,8 +234,6 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
 
         // init editor
         this.zone.runOutsideAngular(() => {
-            const customButtons = this._options.toolbar.find(btns => btns[0] === 'customButtons');
-            customButtons[1] = this.ngxSummernoteCustomButtons
             this._editor = this._$element.summernote(this._options).data('summernote').$note;
             if (this.ngxSummernoteDisabled) {
                 this._$element.summernote('disable');
@@ -239,6 +248,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
     }
 
     private setContent(firstTime = false) {
+        // console.log("set content", firstTime, this._oldModel, this._model)
         const self = this;
         // Set initial content
         if (this._model || this._model === '') {
@@ -328,4 +338,28 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
         reader.onerror = error => console.error(error);
     }
 
+
+    private codeBlockButton() {
+        return function (context) {
+            const ui = $.summernote.ui;
+            // create button
+            const button = ui.button({
+                contents: 'Code block',
+                tooltip: 'Add raw code',
+                click: function () {
+                    let selectedText = null;
+                    // The below code will copy the selected block and add it into our code=block
+                    if (window.getSelection) {
+                        selectedText = window.getSelection().toString().replace(/^\s+|\s+$/g, '');
+                    }
+                    const codeText = selectedText ? selectedText : `Place your code here.`;
+                    const codeBlock = `<pre class="code-block" style="font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 12px; padding: 14px 12px; margin-bottom: 10px; line-height: 1.42857; word-break: break-all; overflow-wrap: break-word; background-color: rgb(250, 251, 253); border: 1px solid rgb(234, 236, 240); border-radius: 4px; color: #60a0b0"><span style="white-space: pre-wrap;">${codeText}</span></pre>`;
+
+                    context.invoke('editor.pasteHTML', codeBlock);
+                }
+            });
+
+            return button.render();   // return button as jquery object
+        }
+    }
 }

@@ -14,15 +14,21 @@ export class AppComponent {
 
   config: any = {
     height: '200px',
-      uploadImagePath: '/api/upload',
-      buttons: {
-        test: this.customButton()
-      }
+    uploadImagePath: '/api/upload',
+    toolbar: [
+      ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
+      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+      ['fontsize', ['fontname', 'fontsize', 'color']],
+      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
+      ['insert', ['table', 'picture', 'link', 'video', 'hr']],
+      ['customButtons', ['testBtn']]
+    ],
+    buttons: {
+      'testBtn': this.customButton()
+    }
   };
   
   editorDisabled = false;
-
-  wysiwygContent: string;
 
   get sanitizedHtml() {
     return this.sanitizer.bypassSecurityTrustHtml(this.form.get('html').value);
@@ -34,7 +40,6 @@ export class AppComponent {
     this.form = new FormGroup({
       html: new FormControl()
     });
-    this.wysiwygContent = '<p>Testing....</p>';
   }
 
   enableEditor() {
@@ -53,10 +58,10 @@ export class AppComponent {
     return (context) => {
       const ui = $.summernote.ui;
       const button = ui.button({
-        contents: 'Code block',
-        tooltip: 'Code block',
+        contents: 'Test btn',
+        tooltip: 'Test',
         click: function () {
-          context.invoke('editor.pasteHTML', '<pre><code class="html">Place code here</code></pre>');
+          context.invoke('editor.pasteHTML', '<div>Hello from test btn!!!!</div>');
         }
       });
       return button.render();
