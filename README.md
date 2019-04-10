@@ -50,7 +50,7 @@ Summernote is initialized with the following deafult config:
       ['style', ['bold', 'italic', 'underline', 'clear']],
       ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
       ['fontsize', ['fontname', 'fontsize', 'color']],
-      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
+      ['para', ['style', 'ul', 'ol', 'paragraph', 'height']],
       ['insert', ['table', 'picture', 'link', 'video', 'hr']]
   ],
   fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
@@ -94,3 +94,42 @@ API call response is expected to be like:
 ```
 
 If the reponse does not follow the above structure then the image is inserted as data URL.
+
+## Add custom button
+
+In your component setup summernote `config` and code for the custom button, e.g.:
+
+```typescript
+config: any = {
+    height: '200px',
+    uploadImagePath: '/api/upload',
+    toolbar: [
+      ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
+      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+      ['fontsize', ['fontname', 'fontsize', 'color']],
+      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
+      ['insert', ['table', 'picture', 'link', 'video', 'hr']],
+      ['customButtons', ['testBtn']]
+    ],
+    buttons: {
+      'testBtn': this.customButton()
+    }
+  };
+
+  ...
+
+  customButton() {
+    return (context) => {
+      const ui = $.summernote.ui;
+      const button = ui.button({
+        contents: 'Test btn',
+        tooltip: 'Test',
+        click: function () {
+          context.invoke('editor.pasteHTML', '<div>Hello from test btn!!!!</div>');
+        }
+      });
+      return button.render();
+    }
+  }
+
+```
