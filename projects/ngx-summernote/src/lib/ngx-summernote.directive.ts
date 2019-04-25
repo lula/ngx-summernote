@@ -230,11 +230,13 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
 
         this.setContent(true);
 
-        this.initListeners();
+        
+        // this.initListeners(); // issue #31 
 
         // init editor
         this.zone.runOutsideAngular(() => {
             this._editor = this._$element.summernote(this._options).data('summernote').$note;
+            this.initListeners(); // issue #31
             if (this.ngxSummernoteDisabled) {
                 this._$element.summernote('disable');
             }
