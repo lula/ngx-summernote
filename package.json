@@ -9,7 +9,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build_lib": "ng build ngx-summernote && cp README.md LICENSE dist/ngx-summernote",
+    "build_lib": "ng build --prod ngx-summernote && cp README.md LICENSE dist/ngx-summernote",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
