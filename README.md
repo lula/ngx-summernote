@@ -1,6 +1,6 @@
 # NgxSummernote
 
-[Summernote](https://github.com/summernote/summernote) wysiwyg editor for Angular 6/7.
+[Summernote](https://github.com/summernote/summernote) wysiwyg editor for Angular.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
@@ -13,6 +13,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 Install ngx-summernote and dependencies:
 
 `npm install --save ngx-summernote summernote jquery`
+
+Compatibility:
+
+Angular | ngx-summernote
+------- | --------------
+8       | 0.7.x
+7       | 0.6.x
+6       | 0.5.4
 
 ## Editor
 
@@ -132,4 +140,18 @@ config: any = {
     }
   }
 
+```
+
+## Development
+
+To use the test application, first build the lib:
+
+```
+npm run build_lib
+```
+
+Then serve the test application and open it in your browser:
+
+```
+npm start
 ```

@@ -1,6 +1,6 @@
 {
   "name": "ngx-summernote",
-  "version": "0.6.5",
+  "version": "0.7.0",
   "author": "Luca Lulani",
   "license": "MIT",
   "readme": "README.md",
@@ -13,9 +13,9 @@
     "url": "https://github.com/lula/ngx-summernote.git"
   },
   "peerDependencies": {
-    "@angular/common": ">=6.0.0 <=8.0.0",
-    "@angular/core": ">=6.0.0 <=8.0.0",
-    "@angular/forms": ">=6.0.0 <=8.0.0",
+    "@angular/common": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@angular/forms": "^8.0.0",
     "summernote": "^0.8.10"
   }
 }
