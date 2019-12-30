@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -9,10 +9,15 @@ declare var $;
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {  
+export class AppComponent implements OnInit {
   form: FormGroup;
-
   config: any = {
+    // airMode: true,
+    // popover: {
+    //   air: [
+    //     ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+    //   ]
+    // }
     height: '200px',
     uploadImagePath: '/api/upload',
     toolbar: [
@@ -21,25 +26,26 @@ export class AppComponent {
       ['fontsize', ['fontname', 'fontsize', 'color']],
       ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
       ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-      ['customButtons', ['testBtn']]
+      ['customButtons', ['testBtn']],
     ],
     buttons: {
       'testBtn': this.customButton()
     }
   };
-  
+
   editorDisabled = false;
 
   get sanitizedHtml() {
     return this.sanitizer.bypassSecurityTrustHtml(this.form.get('html').value);
   }
 
-  constructor(
-    private sanitizer: DomSanitizer
-  ) {
+  constructor(private sanitizer: DomSanitizer) {
     this.form = new FormGroup({
       html: new FormControl()
     });
+  }
+
+  ngOnInit() {
   }
 
   enableEditor() {
@@ -55,16 +61,19 @@ export class AppComponent {
   }
 
   customButton() {
-    return (context) => {
+    return context => {
       const ui = $.summernote.ui;
       const button = ui.button({
         contents: 'Test btn',
         tooltip: 'Test',
-        click: function () {
-          context.invoke('editor.pasteHTML', '<div>Hello from test btn!!!!</div>');
+        click: function() {
+          context.invoke(
+            'editor.pasteHTML',
+            '<div>Hello from test btn!!!!</div>'
+          );
         }
       });
       return button.render();
-    }
+    };
   }
 }
