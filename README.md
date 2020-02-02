@@ -103,9 +103,7 @@ API call response is expected to be like:
 
 If the reponse does not follow the above structure then the image is inserted as data URL.
 
-## Remove images from server when deleted from HTML
-
-Use `(mediaDelete)`:
+To remove images from server when deleted from HTML, use `(mediaDelete)`:
 
 ```html
 <div [ngxSummernote] (mediaDelete)="onDelete($event)"></div>
