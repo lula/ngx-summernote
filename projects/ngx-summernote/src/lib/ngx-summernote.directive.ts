@@ -41,6 +41,7 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
     // summernoteModel directive as output: update model if editor contentChanged
     @Output() summernoteModelChange: EventEmitter<any> = new EventEmitter<any>();
     @Output() imageUpload: EventEmitter<any> = new EventEmitter<any>();
+    @Output() mediaDelete: EventEmitter<any> = new EventEmitter<any>();
 
     // summernoteInit directive as output: send manual editor initialization
     @Output() summernoteInit: EventEmitter<Object> = new EventEmitter<Object>();
@@ -67,7 +68,8 @@ export class NgxSummernoteDirective implements ControlValueAccessor, OnInit, OnD
         ],
         fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times'],
         callbacks: {
-            onImageUpload: (files) => this.uploadImage(files)
+            onImageUpload: (files) => this.uploadImage(files),
+            onMediaDelete: (files) => this.mediaDelete.emit({ url: $(files[0]).attr('src') })
         },
         buttons: {
             codeBlock: this.codeBlockButton()

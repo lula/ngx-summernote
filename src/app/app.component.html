@@ -9,7 +9,8 @@
   <div formControlName="html" 
        [ngxSummernote]="config"
        [ngxSummernoteDisabled]="editorDisabled"
-       (blur)="onBlur()">
+       (blur)="onBlur()"
+       (mediaDelete)="onDelete($event)">
    </div>
 </div>
 
