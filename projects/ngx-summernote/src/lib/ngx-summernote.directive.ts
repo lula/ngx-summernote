@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient } from "@angular/common/http";
 import {
   Directive,
   ElementRef,
@@ -10,17 +10,17 @@ import {
   OnDestroy,
   OnInit,
   Output
-} from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { of, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { SummernoteOptions } from './summernote-options';
+} from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { of, throwError } from "rxjs";
+import { catchError, map } from "rxjs/operators";
+import { SummernoteOptions } from "./summernote-options";
 
 declare var $;
 
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: '[ngxSummernote]',
+  selector: "[ngxSummernote]",
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -46,44 +46,10 @@ export class NgxSummernoteDirective
     this.updateEditor(content);
   }
 
-
-    // summernoteModel directive as output: update model if editor contentChanged
-    @Output() summernoteModelChange: EventEmitter<any> = new EventEmitter<any>();
-    @Output() imageUpload: EventEmitter<any> = new EventEmitter<any>();
-    @Output() mediaDelete: EventEmitter<any> = new EventEmitter<any>();
-
-    // summernoteInit directive as output: send manual editor initialization
-    @Output() summernoteInit: EventEmitter<Object> = new EventEmitter<Object>();
-
-    @Output() blur: EventEmitter<any> = new EventEmitter<any>();
-
-    @Input() ngxSummernoteDisabled: boolean;
-
-    private _options: any = {
-        immediateAngularModelUpdate: false,
-        angularIgnoreAttrs: null,
-        placeholder: '',
-        tabsize: 2,
-        height: 100,
-        uploadImagePath: '',
-        toolbar: [
-            // [groupName, [list of button]]
-            ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
-            // ['style', ['bold', 'italic', 'underline', 'clear']],
-            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-            ['fontsize', ['fontname', 'fontsize', 'color']],
-            ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
-            ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-        ],
-        fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times'],
-        callbacks: {
-            onImageUpload: (files) => this.uploadImage(files),
-            onMediaDelete: (files) => this.mediaDelete.emit({ url: $(files[0]).attr('src') })
-        },
-        buttons: {
-            codeBlock: this.codeBlockButton()
-        }
-    };
+  // summernoteModel directive as output: update model if editor contentChanged
+  @Output() summernoteModelChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() imageUpload: EventEmitter<any> = new EventEmitter<any>();
+  @Output() mediaDelete: EventEmitter<any> = new EventEmitter<any>();
 
   // summernoteInit directive as output: send manual editor initialization
   @Output() summernoteInit: EventEmitter<Object> = new EventEmitter<Object>();
@@ -95,8 +61,8 @@ export class NgxSummernoteDirective
   // default options from summernote
   private _options: SummernoteOptions = {};
 
-  private SPECIAL_TAGS: string[] = ['img', 'button', 'input', 'a'];
-  private INNER_HTML_ATTR = 'innerHTML';
+  private SPECIAL_TAGS: string[] = ["img", "button", "input", "a"];
+  private INNER_HTML_ATTR = "innerHTML";
   private _hasSpecialTag: boolean;
   private _$element: any; // jquery wrapped element
   private _editor: any; // editor element
@@ -138,9 +104,9 @@ export class NgxSummernoteDirective
           changes.ngxSummernoteDisabled.previousValue
       ) {
         if (changes.ngxSummernoteDisabled.currentValue) {
-          this._$element.summernote('disable');
+          this._$element.summernote("disable");
         } else {
-          this._$element.summernote('enable');
+          this._$element.summernote("enable");
         }
       }
     }
@@ -176,7 +142,7 @@ export class NgxSummernoteDirective
     this._$element.html(content);
 
     if (this._editorInitialized) {
-      this._$element.summernote('code', content);
+      this._$element.summernote("code", content);
     } else {
       this._$element.html(content);
     }
@@ -209,8 +175,8 @@ export class NgxSummernoteDirective
 
         modelContent = attrs;
       } else {
-        const returnedHtml: any = content || '';
-        if (typeof returnedHtml === 'string') {
+        const returnedHtml: any = content || "";
+        if (typeof returnedHtml === "string") {
           modelContent = returnedHtml;
         }
       }
@@ -229,13 +195,13 @@ export class NgxSummernoteDirective
       return;
     }
 
-    this._$element.on('summernote.init', function() {
+    this._$element.on("summernote.init", function() {
       setTimeout(function() {
         self.updateModel();
       }, 0);
     });
 
-    this._$element.on('summernote.change', function(
+    this._$element.on("summernote.change", function(
       event,
       contents,
       $editable
@@ -245,7 +211,7 @@ export class NgxSummernoteDirective
       }, 0);
     });
 
-    this._$element.on('summernote.blur', function() {
+    this._$element.on("summernote.blur", function() {
       setTimeout(function() {
         self.onTouched();
         self.blur.emit();
@@ -253,7 +219,7 @@ export class NgxSummernoteDirective
     });
 
     if (this._options.immediateAngularModelUpdate) {
-      this._editor.on('keyup', function() {
+      this._editor.on("keyup", function() {
         setTimeout(function() {
           self.updateModel();
         }, 0);
@@ -274,10 +240,10 @@ export class NgxSummernoteDirective
     this.zone.runOutsideAngular(() => {
       this._editor = this._$element
         .summernote(this._options)
-        .data('summernote').$note;
+        .data("summernote").$note;
       this.initListeners(); // issue #31
       if (this.ngxSummernoteDisabled) {
-        this._$element.summernote('disable');
+        this._$element.summernote("disable");
       }
     });
 
@@ -285,14 +251,14 @@ export class NgxSummernoteDirective
   }
 
   private setHtml() {
-    this._$element.summernote('code', this._model || '', true);
+    this._$element.summernote("code", this._model || "", true);
   }
 
   private setContent(firstTime = false) {
     // console.log('set content', firstTime, this._oldModel, this._model)
     const self = this;
     // Set initial content
-    if (this._model || this._model === '') {
+    if (this._model || this._model === "") {
       this._oldModel = this._model;
       if (this._hasSpecialTag) {
         const tags: Object = this._model;
@@ -316,8 +282,8 @@ export class NgxSummernoteDirective
 
   private destroyEditor() {
     if (this._editorInitialized) {
-      this._editor.off('keyup');
-      this._$element.summernote('destroy'); // TODO not sure it works now...
+      this._editor.off("keyup");
+      this._$element.summernote("destroy"); // TODO not sure it works now...
       this._editorInitialized = false;
     }
   }
@@ -344,24 +310,24 @@ export class NgxSummernoteDirective
   private async uploadImage(files) {
     const data = new FormData();
     this.imageUpload.emit({ uploading: true });
-    data.append('image', files[0]);
+    data.append("image", files[0]);
     if (this._options.uploadImagePath) {
       this.http
         .post(this._options.uploadImagePath, data)
         .pipe(
           map(
             (response: { path: string }) =>
-              response && typeof response.path === 'string' && response.path
+              response && typeof response.path === "string" && response.path
           ),
           catchError(e => {
-            throwError('An error occured while uploading' + e);
-            return of('');
+            throwError("An error occured while uploading" + e);
+            return of("");
           })
         )
         .subscribe(
           dataIn => {
             if (dataIn) {
-              this._$element.summernote('insertImage', dataIn);
+              this._$element.summernote("insertImage", dataIn);
               this.imageUpload.emit({ uploading: false });
             } else {
               this.insertFromDataURL(files);
@@ -380,8 +346,8 @@ export class NgxSummernoteDirective
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onload = () => {
-      this._$element.summernote('insertImage', reader.result);
-      this.imageUpload.emit({ uploading: false, encoding: 'base64' });
+      this._$element.summernote("insertImage", reader.result);
+      this.imageUpload.emit({ uploading: false, encoding: "base64" });
     };
     reader.onerror = error => console.error(error);
   }
@@ -391,8 +357,8 @@ export class NgxSummernoteDirective
       const ui = $.summernote.ui;
       // create button
       const button = ui.button({
-        contents: 'Code block',
-        tooltip: 'Add raw code',
+        contents: "Code block",
+        tooltip: "Add raw code",
         click: function() {
           let selectedText = null;
           // The below code will copy the selected block and add it into our code=block
@@ -400,7 +366,7 @@ export class NgxSummernoteDirective
             selectedText = window
               .getSelection()
               .toString()
-              .replace(/^\s+|\s+$/g, '');
+              .replace(/^\s+|\s+$/g, "");
           }
           const codeText = selectedText
             ? selectedText
@@ -422,7 +388,7 @@ export class NgxSummernoteDirective
                 </span>
             </pre>`;
 
-          context.invoke('editor.pasteHTML', codeBlock);
+          context.invoke("editor.pasteHTML", codeBlock);
         }
       });
 
