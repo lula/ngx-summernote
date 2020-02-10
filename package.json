@@ -1,6 +1,6 @@
 {
   "name": "ngx-summernote-app",
-  "version": "0.0.0",
+  "version": "0.7.2",
   "keywords": [
     "summernote",
     "angular"
@@ -26,7 +26,7 @@
     "core-js": "^3.5.0",
     "jquery": "^3.4.1",
     "rxjs": "^6.5.3",
-    "summernote": "^0.8.10",
+    "summernote": "^0.8.15",
     "zone.js": "^0.10.2"
   },
   "devDependencies": {

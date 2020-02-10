@@ -39,6 +39,7 @@ export class NgxSummernoteDirective
       // add buttons
       options.buttons.codeBlock = this.codeBlockButton();
       Object.assign(this._options, options);
+      console.log(this._options);
     }
   }
   // summernoteModel directive as input: store initial editor content
