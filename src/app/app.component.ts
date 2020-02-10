@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
     //   air: [
     //     ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
     //   ]
-    // }
+    // },
     height: '200px',
     uploadImagePath: '/api/upload',
     toolbar: [

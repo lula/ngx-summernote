@@ -372,7 +372,7 @@ export class NgxSummernoteDirective
             : `Place your code here.`;
           const codeBlock = `<pre
                 class='code-block'
-                style='font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; 
+                style='font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
                        font-size: 12px;
                        padding: 14px 12px;
                        margin-bottom: 10px;
