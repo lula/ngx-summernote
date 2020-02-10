@@ -167,3 +167,9 @@ Then serve the test application and open it in your browser:
 ```
 npm start
 ```
+
+
+
+******** 
+
+default config is now summernote's. Code block button (as other custom buttons in this lib) now has to be added in the component config.
