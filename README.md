@@ -103,6 +103,18 @@ API call response is expected to be like:
 
 If the reponse does not follow the above structure then the image is inserted as data URL.
 
+To remove images from server when deleted from HTML, use `(mediaDelete)`:
+
+```html
+<div [ngxSummernote] (mediaDelete)="onDelete($event)"></div>
+```
+
+```typescript
+onDelete(file) {
+  deleteResource(file.url);
+}
+```
+
 ## Add custom button
 
 In your component setup summernote `config` and code for the custom button, e.g.:

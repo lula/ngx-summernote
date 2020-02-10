@@ -1,5 +1,5 @@
 import {
-    Directive, Input, ElementRef, Renderer, AfterViewInit
+    Directive, Input, ElementRef, Renderer2, AfterViewInit
 } from '@angular/core';
 
 declare var $;
@@ -16,13 +16,13 @@ export class NgxSummernoteViewDirective implements AfterViewInit {
     private _element: any;
 
     constructor(
-        private renderer: Renderer,
+        private renderer2: Renderer2,
         element: ElementRef
     ) {
         this._element = element.nativeElement;
     }
 
     ngAfterViewInit() {
-        this.renderer.setElementClass(this._element, 'ngx-summernote-view', true);
+        this.renderer2.addClass(this._element, 'ngx-summernote-view');
     }
 }

@@ -60,6 +60,10 @@ export class AppComponent implements OnInit {
     console.log('Blur');
   }
 
+  onDelete(file) {
+    console.log(file.url);
+  }
+
   customButton() {
     return context => {
       const ui = $.summernote.ui;

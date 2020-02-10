@@ -46,9 +46,44 @@ export class NgxSummernoteDirective
     this.updateEditor(content);
   }
 
-  // summernoteModel directive as output: update model if editor contentChanged
-  @Output() summernoteModelChange: EventEmitter<any> = new EventEmitter<any>();
-  @Output() imageUpload: EventEmitter<any> = new EventEmitter<any>();
+
+    // summernoteModel directive as output: update model if editor contentChanged
+    @Output() summernoteModelChange: EventEmitter<any> = new EventEmitter<any>();
+    @Output() imageUpload: EventEmitter<any> = new EventEmitter<any>();
+    @Output() mediaDelete: EventEmitter<any> = new EventEmitter<any>();
+
+    // summernoteInit directive as output: send manual editor initialization
+    @Output() summernoteInit: EventEmitter<Object> = new EventEmitter<Object>();
+
+    @Output() blur: EventEmitter<any> = new EventEmitter<any>();
+
+    @Input() ngxSummernoteDisabled: boolean;
+
+    private _options: any = {
+        immediateAngularModelUpdate: false,
+        angularIgnoreAttrs: null,
+        placeholder: '',
+        tabsize: 2,
+        height: 100,
+        uploadImagePath: '',
+        toolbar: [
+            // [groupName, [list of button]]
+            ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
+            // ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+            ['fontsize', ['fontname', 'fontsize', 'color']],
+            ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
+            ['insert', ['table', 'picture', 'link', 'video', 'hr']],
+        ],
+        fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times'],
+        callbacks: {
+            onImageUpload: (files) => this.uploadImage(files),
+            onMediaDelete: (files) => this.mediaDelete.emit({ url: $(files[0]).attr('src') })
+        },
+        buttons: {
+            codeBlock: this.codeBlockButton()
+        }
+    };
 
   // summernoteInit directive as output: send manual editor initialization
   @Output() summernoteInit: EventEmitter<Object> = new EventEmitter<Object>();
