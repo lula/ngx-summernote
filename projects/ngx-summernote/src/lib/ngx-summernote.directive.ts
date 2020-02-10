@@ -36,10 +36,15 @@ export class NgxSummernoteDirective
       if (!options.buttons) {
         options.buttons = {};
       }
+
+      options.callbacks = {
+        ...options.callbacks,
+        onImageUpload: (files) => this.uploadImage(files),
+        onMediaDelete: (files) => this.mediaDelete.emit({ url: $(files[0]).attr('src') })
+      }
       // add buttons
       options.buttons.codeBlock = this.codeBlockButton();
       Object.assign(this._options, options);
-      console.log(this._options);
     }
   }
   // summernoteModel directive as input: store initial editor content

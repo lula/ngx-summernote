@@ -12,25 +12,25 @@ declare var $;
 export class AppComponent implements OnInit {
   form: FormGroup;
   config: any = {
-    airMode: true,
-    // popover: {
-    //   air: [
-    //     ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-    //   ]
-    // },
-    // height: '200px',
-    // uploadImagePath: '/api/upload',
-    // toolbar: [
-    //   ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
-    //   ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-    //   ['fontsize', ['fontname', 'fontsize', 'color']],
-    //   ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
-    //   ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-    //   ['customButtons', ['testBtn']],
-    // ],
-    // buttons: {
-    //   'testBtn': this.customButton()
-    // }
+    airMode: false,
+    popover: {
+      air: [
+        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+      ]
+    },
+    height: '200px',
+    uploadImagePath: '/api/upload',
+    toolbar: [
+      ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
+      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+      ['fontsize', ['fontname', 'fontsize', 'color']],
+      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
+      ['insert', ['table', 'picture', 'link', 'video', 'hr']],
+      ['customButtons', ['testBtn']],
+    ],
+    buttons: {
+      'testBtn': this.customButton()
+    }
   };
 
   editorDisabled = false;
