@@ -77,9 +77,9 @@ Use `[ngxSummernoteView]` directive on an element to set innerHTML of an element
 <div [ngxSummernoteView]="content"></div>
 ```
 
-## Upload images to server instead of inserting Base64 in HTML
+## Upload images to server
 
-Use `uploadImagePath` option in config:
+If you want to upload images to server and use remote paths in editor, you need to set `uploadImagePath` option in config:
 
 ```javascipt
 config = {
@@ -139,12 +139,14 @@ export class AppComponent implements OnInit {
 }
 ```
 
+See detailed info on custom buttons [here](https://summernote.org/deep-dive/#custom-button).
+
 ## Development
 
 To use the test application, first build the lib:
 
 ```
-npm run build_lib
+ng build ngx-summernote
 ```
 
 Then serve the test application and open it in your browser:
@@ -152,9 +154,3 @@ Then serve the test application and open it in your browser:
 ```
 npm start
 ```
-
-
-
-******** 
-
-default config is now summernote's. Code block button (as other custom buttons in this lib) now has to be added in the component config.
