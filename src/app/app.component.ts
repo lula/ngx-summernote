@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { codeBlockButton } from 'ngx-summernote';
 
 declare var $;
 
@@ -13,23 +14,58 @@ export class AppComponent implements OnInit {
   form: FormGroup;
   config: any = {
     airMode: false,
+    tabDisable: true,
     popover: {
+      table: [
+        ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+        ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+      ],
+      image: [
+        ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
+        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+        ['remove', ['removeMedia']]
+      ],
+      link: [
+        ['link', ['linkDialogShow', 'unlink']]
+      ],
       air: [
-        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+        [
+          'font',
+          [
+            'bold',
+            'italic',
+            'underline',
+            'strikethrough',
+            'superscript',
+            'subscript',
+            'clear'
+          ]
+        ],
       ]
     },
     height: '200px',
     uploadImagePath: '/api/upload',
     toolbar: [
       ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
-      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+      [
+        'font',
+        [
+          'bold',
+          'italic',
+          'underline',
+          'strikethrough',
+          'superscript',
+          'subscript',
+          'clear'
+        ]
+      ],
       ['fontsize', ['fontname', 'fontsize', 'color']],
       ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
       ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-      ['customButtons', ['testBtn']],
+      ['customButtons', ['testBtn']]
     ],
     buttons: {
-      'testBtn': this.customButton()
+      testBtn: customButton
     },
     codeviewFilter: true,
     codeviewFilterRegex: /<\/*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|ilayer|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|t(?:itle|extarea)|xml|.*onmouseover)[^>]*?>/gi,
@@ -48,8 +84,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   enableEditor() {
     this.editorDisabled = false;
@@ -64,23 +99,20 @@ export class AppComponent implements OnInit {
   }
 
   onDelete(file) {
-    console.log(file.url);
+    console.log('Delete file', file.url);
   }
+}
 
-  customButton() {
-    return context => {
-      const ui = $.summernote.ui;
-      const button = ui.button({
-        contents: 'Test btn',
-        tooltip: 'Test',
-        click: function() {
-          context.invoke(
-            'editor.pasteHTML',
-            '<div>Hello from test btn!!!!</div>'
-          );
-        }
-      });
-      return button.render();
-    };
-  }
+function customButton(context) {
+  const ui = $.summernote.ui;
+  const button = ui.button({
+    contents: '<i class="note-icon-magic"></i> Hello',
+    tooltip: 'Custom button',
+    container: '.note-editor',
+    className: 'note-btn',
+    click: function() {
+      context.invoke('editor.insertText', 'Hello from test btn!!!');
+    }
+  });
+  return button.render();
 }
