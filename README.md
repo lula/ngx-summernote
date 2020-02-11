@@ -1,6 +1,6 @@
 # NgxSummernote
 
-[Summernote](https://github.com/summernote/summernote) editor for Angular :sunglasses
+[Summernote](https://github.com/summernote/summernote) editor for Angular :sunglasses:
 
 ## Installation
 
