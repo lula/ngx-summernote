@@ -1,12 +1,6 @@
 # NgxSummernote
 
-[Summernote](https://github.com/summernote/summernote) wysiwyg editor for Angular.
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
-
-`projects` contains ngx-summernote lib (see Angular CLI libraries generation).
-
-`src` contains an example application. Run `ng serve` to test.
+[Summernote](https://github.com/summernote/summernote) editor for Angular :sunglasses
 
 ## Installation
 
@@ -18,23 +12,24 @@ Compatibility:
 
 Angular | ngx-summernote
 ------- | --------------
+9       | 0.7.x
 8       | 0.7.x
 7       | 0.6.x
 6       | 0.5.4
 
 ## Editor
 
-Add add JQuery and Summernote scripts and styles in angular.json file:
+Add JQuery and Summernote scripts and styles in angular.json file:
 
 ```json
 "styles": [
   ...
-  "node_modules/summernote/dist/summernote-lite.css"
+  "node_modules/summernote/dist/summernote-lite.min.css"
 ],
 "scripts": [
   ...
   "node_modules/jquery/dist/jquery.min.js",
-  "node_modules/summernote/dist/summernote-lite.js"
+  "node_modules/summernote/dist/summernote-lite.min.js"
 ]
 ```
 
@@ -44,34 +39,33 @@ Use `[ngxSummernote]` directive on an element to init Summernote editor:
 <div [ngxSummernote]></div>
 ```
 
-Summernote is initialized with the following deafult config:
-
-```javascript
-{
-  placeholder: '',
-  tabsize: 2,
-  height: 100,
-  uploadImagePath: '',
-  toolbar: [
-      // [groupName, [list of button]]
-      ['misc', ['codeview', 'undo', 'redo']],
-      ['style', ['bold', 'italic', 'underline', 'clear']],
-      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-      ['fontsize', ['fontname', 'fontsize', 'color']],
-      ['para', ['style', 'ul', 'ol', 'paragraph', 'height']],
-      ['insert', ['table', 'picture', 'link', 'video', 'hr']]
-  ],
-  fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
-}
-```
-
-You may also configure Summernote with your own summernote config:
+You may also configure Summernote with your own config:
 
 ```html
 <div [ngxSummernote]="config"></div>
 ```
 
-The provided config will be merged with the default one.
+```typescript
+export class AppComponent implements OnInit {
+  ...
+  config = {
+    placeholder: '',
+    tabsize: 2,
+    height: '200px',
+    uploadImagePath: '/api/upload',
+    toolbar: [
+        ['misc', ['codeview', 'undo', 'redo']],
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+        ['fontsize', ['fontname', 'fontsize', 'color']],
+        ['para', ['style', 'ul', 'ol', 'paragraph', 'height']],
+        ['insert', ['table', 'picture', 'link', 'video', 'hr']]
+    ],
+    fontNames: ['Helvetica', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Roboto', 'Times']
+  }
+  ...
+}
+```
 
 See Summernote available initialization options [here](https://summernote.org/deep-dive/#initialization-options).
 
@@ -120,38 +114,29 @@ onDelete(file) {
 In your component setup summernote `config` and code for the custom button, e.g.:
 
 ```typescript
-config: any = {
-    height: '200px',
-    uploadImagePath: '/api/upload',
-    toolbar: [
-      ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
-      ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-      ['fontsize', ['fontname', 'fontsize', 'color']],
-      ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
-      ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-      ['customButtons', ['testBtn']]
-    ],
+function customButton(context) {
+  const ui = $.summernote.ui;
+  const button = ui.button({
+    contents: '<i class="note-icon-magic"></i> Hello',
+    tooltip: 'Custom button',
+    container: '.note-editor',
+    className: 'note-btn',
+    click: function() {
+      context.invoke('editor.insertText', 'Hello from test btn!!!');
+    }
+  });
+  return button.render();
+}
+
+export class AppComponent implements OnInit {
+  config: any = {
+    ...
     buttons: {
-      'testBtn': this.customButton()
+      'testBtn': customButton
     }
   };
-
   ...
-
-  customButton() {
-    return (context) => {
-      const ui = $.summernote.ui;
-      const button = ui.button({
-        contents: 'Test btn',
-        tooltip: 'Test',
-        click: function () {
-          context.invoke('editor.pasteHTML', '<div>Hello from test btn!!!!</div>');
-        }
-      });
-      return button.render();
-    }
-  }
-
+}
 ```
 
 ## Development
