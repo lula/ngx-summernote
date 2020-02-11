@@ -12,8 +12,9 @@ import {
   Output
 } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { of, throwError } from "rxjs";
-import { catchError, map } from "rxjs/operators";
+import { combineLatest } from "rxjs";
+import { map } from "rxjs/operators";
+
 import { SummernoteOptions } from "./summernote-options";
 
 declare var $;
@@ -39,9 +40,10 @@ export class NgxSummernoteDirective
 
       options.callbacks = {
         ...options.callbacks,
-        onImageUpload: (files) => this.uploadImage(files),
-        onMediaDelete: (files) => this.mediaDelete.emit({ url: $(files[0]).attr('src') })
-      }
+        onImageUpload: files => this.uploadImage(files),
+        onMediaDelete: files =>
+          this.mediaDelete.emit({ url: $(files[0]).attr("src") })
+      };
       // add buttons
       options.buttons.codeBlock = this.codeBlockButton();
       Object.assign(this._options, options);
@@ -314,48 +316,78 @@ export class NgxSummernoteDirective
   }
 
   private async uploadImage(files) {
-    const data = new FormData();
-    this.imageUpload.emit({ uploading: true });
-    data.append("image", files[0]);
     if (this._options.uploadImagePath) {
-      this.http
-        .post(this._options.uploadImagePath, data)
-        .pipe(
-          map(
-            (response: { path: string }) =>
-              response && typeof response.path === "string" && response.path
-          ),
-          catchError(e => {
-            throwError("An error occured while uploading" + e);
-            return of("");
-          })
-        )
-        .subscribe(
-          dataIn => {
-            if (dataIn) {
-              this._$element.summernote("insertImage", dataIn);
-              this.imageUpload.emit({ uploading: false });
-            } else {
-              this.insertFromDataURL(files);
-            }
-          },
-          e => {
-            this.insertFromDataURL(files);
+      this.imageUpload.emit({ uploading: true });
+
+      const requests = [];
+      for (const file of files) {
+        const data = new FormData();
+        data.append("image", file);
+        const obs = this.http
+          .post(this._options.uploadImagePath, data)
+          .pipe(
+            map(
+              (response: { path: string }) =>
+                response && typeof response.path === "string" && response.path
+            )
+          );
+        requests.push(obs);
+      }
+
+      combineLatest(requests).subscribe(
+        (remotePaths: string[]) => {
+          for (let remotePath of remotePaths) {
+            this._$element.summernote("insertImage", remotePath);
           }
-        );
+          this.imageUpload.emit({ uploading: false });
+        },
+        err => this.insertFromDataURL(files)
+      );
+
+      // const data = new FormData();
+      // data.append("image", files[0]);
+      // this.http
+      //   .post(this._options.uploadImagePath, data)
+      //   .pipe(
+      //     map(
+      //       (response: { path: string }) =>
+      //         response && typeof response.path === "string" && response.path
+      //     ),
+      //     // catchError(e => {
+      //     //   throwError("An error occured while uploading" + e);
+      //     //   return of(e);
+      //     // })
+      //   )
+      //   .subscribe(
+      //     dataIn => {
+      //       console.log("DATA IN",  dataIn)
+      //       if (dataIn) {
+      //         this._$element.summernote("insertImage", dataIn);
+      //         this.imageUpload.emit({ uploading: false });
+      //       } else {
+      //         this.insertFromDataURL(files);
+      //       }
+      //     },
+      //     err => {
+      //       console.error('Upload error', err);
+      //       this.insertFromDataURL(files);
+      //     }
+      //   );
     } else {
       this.insertFromDataURL(files);
     }
   }
 
   insertFromDataURL(files) {
-    const reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onload = () => {
-      this._$element.summernote("insertImage", reader.result);
-      this.imageUpload.emit({ uploading: false, encoding: "base64" });
-    };
-    reader.onerror = error => console.error(error);
+    for (const file of files) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this._$element.summernote("insertImage", reader.result);
+        this.imageUpload.emit({ uploading: false, encoding: "base64" });
+      };
+      reader.onerror = error => console.error(error);
+    }
   }
 
   private codeBlockButton() {
