@@ -12,7 +12,7 @@ import {
   Output
 } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { combineLatest } from "rxjs";
+import { combineLatest, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { SummernoteOptions } from "./summernote-options";
@@ -77,6 +77,8 @@ export class NgxSummernoteDirective
   private _model: string;
   private _oldModel: string = null;
   private _editorInitialized: boolean;
+  
+  private uploadSub: Subscription;
 
   constructor(el: ElementRef, private zone: NgZone, private http: HttpClient) {
     const element: any = el.nativeElement;
@@ -122,6 +124,9 @@ export class NgxSummernoteDirective
 
   ngOnDestroy() {
     this.destroyEditor();
+    if (this.uploadSub) {
+      this.uploadSub.unsubscribe();
+    }
   }
 
   // Begin ControlValueAccesor methods.
@@ -334,7 +339,7 @@ export class NgxSummernoteDirective
         requests.push(obs);
       }
 
-      combineLatest(requests).subscribe(
+      this.uploadSub = combineLatest(requests).subscribe(
         (remotePaths: string[]) => {
           for (let remotePath of remotePaths) {
             this._$element.summernote("insertImage", remotePath);
