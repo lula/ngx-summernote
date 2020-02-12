@@ -63,8 +63,8 @@ export class NgxSummernoteDirective
   @Output() imageUpload: EventEmitter<any> = new EventEmitter<any>();
   @Output() mediaDelete: EventEmitter<any> = new EventEmitter<any>();
 
-  // summernoteInit directive as output: send manual editor initialization
-  @Output() summernoteInit: EventEmitter<Object> = new EventEmitter<Object>();
+  // // summernoteInit directive as output: send manual editor initialization
+  // @Output() summernoteInit: EventEmitter<Object> = new EventEmitter<Object>();
 
   @Output() blur: EventEmitter<any> = new EventEmitter<any>();
 
@@ -97,14 +97,7 @@ export class NgxSummernoteDirective
   }
 
   ngOnInit() {
-    // check if output summernoteInit is present. Maybe observers is private and
-    // should not be used?? TODO how to better test that an output directive is present.
-    if (!this.summernoteInit.observers.length) {
-      this.createEditor();
-    } else {
-      // TODO not sure it works now...
-      this.generateManualController();
-    }
+    this.createEditor();
   }
 
   ngOnChanges(changes) {
@@ -309,17 +302,6 @@ export class NgxSummernoteDirective
     }
 
     return null;
-  }
-
-  // send manual editor initialization
-  // TODO not sure it works now...
-  private generateManualController() {
-    const controls = {
-      initialize: this.createEditor.bind(this),
-      destroy: this.destroyEditor.bind(this),
-      getEditor: this.getEditor.bind(this)
-    };
-    this.summernoteInit.emit(controls);
   }
 
   private async uploadImage(files) {
