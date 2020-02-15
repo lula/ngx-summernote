@@ -101,6 +101,10 @@ export class AppComponent implements OnInit {
   onDelete(file) {
     console.log('Delete file', file.url);
   }
+
+  summernoteInit(event) {
+    console.log(event)
+  }
 }
 
 function customButton(context) {

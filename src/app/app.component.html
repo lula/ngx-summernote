@@ -10,7 +10,8 @@
        [ngxSummernote]="config"
        [ngxSummernoteDisabled]="editorDisabled"
        (blur)="onBlur()"
-       (mediaDelete)="onDelete($event)">
+       (mediaDelete)="onDelete($event)"
+       (summernoteInit)="summernoteInit($event)">
    </div>
 </div>
 
