@@ -83,7 +83,11 @@ export class NgxSummernoteDirective
 
   private uploadSub: Subscription;
 
-  constructor(el: ElementRef, private zone: NgZone, private http: HttpClient) {
+  constructor(
+    private el: ElementRef,
+    private zone: NgZone,
+    private http: HttpClient
+  ) {
     const element: any = el.nativeElement;
 
     // check if the element is a special tag
@@ -92,7 +96,9 @@ export class NgxSummernoteDirective
     }
 
     // jquery wrap and store element
-    this._$element = <any>$(element);
+
+    // this._$element = <any>$(element);
+
     this.zone = zone;
   }
 
@@ -242,20 +248,33 @@ export class NgxSummernoteDirective
 
     this.setContent(true);
 
+    const wait = 50;
     // this.initListeners(); // issue #31
+    try {
+      this._$element = <any>$(this.el.nativeElement);
+    } catch (error) {
+      console.log(`JQuery seems not te loaded yet! Wait ${wait}ms and try again`);
+    }
 
-    // init editor
-    this.zone.runOutsideAngular(() => {
-      this._editor = this._$element
-        .summernote(this._options)
-        .data('summernote').$note;
-      this.initListeners(); // issue #31
-      if (this.ngxSummernoteDisabled) {
-        this._$element.summernote('disable');
-      }
-    });
+    if (!this._$element) {
+      setTimeout(() => {
+        this.createEditor();
+      }, wait);
+    } else {
+      // init editor
+      this.zone.runOutsideAngular(() => {
+        this._editor = this._$element
+          .summernote(this._options)
+          .data('summernote').$note;
 
-    this._editorInitialized = true;
+        this.initListeners(); // issue #31
+
+        if (this.ngxSummernoteDisabled) {
+          this._$element.summernote('disable');
+        }
+      });
+      this._editorInitialized = true;
+    }
   }
 
   private setHtml() {
@@ -296,13 +315,13 @@ export class NgxSummernoteDirective
     }
   }
 
-  private getEditor() {
-    if (this._$element) {
-      return this._$element.summernote.bind(this._$element);
-    }
+  // private getEditor() {
+  //   if (this._$element) {
+  //     return this._$element.summernote.bind(this._$element);
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
   private async uploadImage(files) {
     if (this._options.uploadImagePath) {
