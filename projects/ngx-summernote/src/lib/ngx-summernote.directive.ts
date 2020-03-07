@@ -153,7 +153,7 @@ export class NgxSummernoteDirective
     }
 
     this._oldModel = content;
-    this._$element.html(content);
+    // this._$element.html(content);
 
     if (this._editorInitialized) {
       this._$element.summernote('code', content);
