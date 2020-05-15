@@ -19,7 +19,7 @@ Angular | ngx-summernote
 
 ## Editor
 
-Add JQuery and Summernote scripts and styles in angular.json file:
+Add JQuery and Summernote scripts and styles to the angular.json file:
 
 ```json
 "styles": [
@@ -31,6 +31,23 @@ Add JQuery and Summernote scripts and styles in angular.json file:
   "node_modules/jquery/dist/jquery.min.js",
   "node_modules/summernote/dist/summernote-lite.min.js"
 ]
+```
+
+Add NgxSummernoteModule to the app.module.ts file OR to the subcomponent module.ts file if using lazy loading:
+
+```
+...
+import { NgxSummernoteModule } from 'ngx-summernote';
+...
+@NgModule({
+...
+  imports: [
+    ...
+    NgxSummernoteModule
+    ...
+  ]
+})
+export class AppModule { }
 ```
 
 Use `[ngxSummernote]` directive on an element to init Summernote editor:
