@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { codeBlockButton } from 'ngx-summernote';
 
@@ -80,7 +80,7 @@ export class AppComponent implements OnInit {
 
   constructor(private sanitizer: DomSanitizer) {
     this.form = new FormGroup({
-      html: new FormControl()
+      html: new FormControl('', Validators.required)
     });
   }
 

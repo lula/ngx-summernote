@@ -20,3 +20,6 @@
 
 <h3>Code</h3>
 <pre>{{form.get('html').value}}</pre>
+<div *ngIf="form.get('html').invalid">
+  {{form.get('html').errors | json}}
+</div>
