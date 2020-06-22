@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -10,7 +10,7 @@ declare var $;
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  @ViewChild('htmlTextarea', { static: true }) htmlTextarea: ElementRef;
+  showTemplateForm = false;
 
   html: string;
 
