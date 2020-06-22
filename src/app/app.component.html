@@ -1,4 +1,4 @@
-<h3>Summernote editor</h3>
+<!-- <h3>Summernote editor</h3>
 
 <div>
   <button (click)="enableEditor()" [disabled]="!editorDisabled">Enable</button>
@@ -22,4 +22,22 @@
 <pre>{{form.get('html').value}}</pre>
 <div *ngIf="form.get('html').invalid">
   {{form.get('html').errors | json}}
+</div> -->
+
+<form>
+  <textarea 
+      #htmlTextarea
+      name="html" [(ngModel)]="html"
+      [ngxSummernote]="config"
+      [ngxSummernoteDisabled]="editorDisabled"
+      (blur)="onBlur()"
+      (mediaDelete)="onDelete($event)"
+      (summernoteInit)="summernoteInit($event)">
+  </textarea>
+</form>
+
+<h3>Code</h3>
+<pre>{{html}}</pre>
+<div *ngIf="!html || html === ''">
+  Required
 </div>

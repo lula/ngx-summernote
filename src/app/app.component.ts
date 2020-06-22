@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { codeBlockButton } from 'ngx-summernote';
 
 declare var $;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  @ViewChild('htmlTextarea', { static: true }) htmlTextarea: ElementRef;
+
+  html: string;
+
   form: FormGroup;
   config: any = {
     airMode: false,
@@ -23,11 +26,9 @@ export class AppComponent implements OnInit {
       image: [
         ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
         ['float', ['floatLeft', 'floatRight', 'floatNone']],
-        ['remove', ['removeMedia']]
+        ['remove', ['removeMedia']],
       ],
-      link: [
-        ['link', ['linkDialogShow', 'unlink']]
-      ],
+      link: [['link', ['linkDialogShow', 'unlink']]],
       air: [
         [
           'font',
@@ -38,10 +39,10 @@ export class AppComponent implements OnInit {
             'strikethrough',
             'superscript',
             'subscript',
-            'clear'
-          ]
+            'clear',
+          ],
         ],
-      ]
+      ],
     },
     height: '200px',
     uploadImagePath: '/api/upload',
@@ -56,20 +57,20 @@ export class AppComponent implements OnInit {
           'strikethrough',
           'superscript',
           'subscript',
-          'clear'
-        ]
+          'clear',
+        ],
       ],
       ['fontsize', ['fontname', 'fontsize', 'color']],
       ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
       ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-      ['customButtons', ['testBtn']]
+      ['customButtons', ['testBtn']],
     ],
     buttons: {
-      testBtn: customButton
+      testBtn: customButton,
     },
     codeviewFilter: true,
     codeviewFilterRegex: /<\/*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|ilayer|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|t(?:itle|extarea)|xml|.*onmouseover)[^>]*?>/gi,
-    codeviewIframeFilter: true
+    codeviewIframeFilter: true,
   };
 
   editorDisabled = false;
@@ -80,7 +81,7 @@ export class AppComponent implements OnInit {
 
   constructor(private sanitizer: DomSanitizer) {
     this.form = new FormGroup({
-      html: new FormControl('', Validators.required)
+      html: new FormControl('', Validators.required),
     });
   }
 
@@ -103,7 +104,7 @@ export class AppComponent implements OnInit {
   }
 
   summernoteInit(event) {
-    console.log(event)
+    console.log(event);
   }
 }
 
@@ -114,9 +115,9 @@ function customButton(context) {
     tooltip: 'Custom button',
     container: '.note-editor',
     className: 'note-btn',
-    click: function() {
+    click: function () {
       context.invoke('editor.insertText', 'Hello from test btn!!!');
-    }
+    },
   });
   return button.render();
 }
