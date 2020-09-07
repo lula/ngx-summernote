@@ -13,7 +13,7 @@ import { NgxSummernoteViewDirective } from './ngx-summernote-view.directive';
   ]
 })
 export class NgxSummernoteModule {
-  public static forRoot(): ModuleWithProviders {
+  public static forRoot(): ModuleWithProviders<NgxSummernoteModule> {
     return {ngModule: NgxSummernoteModule,  providers: []};
   }
 }
