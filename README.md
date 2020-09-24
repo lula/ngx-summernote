@@ -178,5 +178,6 @@ npm start
 - [NickShcherba](https://github.com/shcherbanikolay)
 - [Mathis Hofer](https://github.com/hupf)
 - [James Manners](https://github.com/jmannau)
+- [Tim Börner](https://github.com/tim-boerner)
 - [Jason K.](https://github.com/lonerzzz)
 - [Elle](https://github.com/LuigiElleBalotta)
