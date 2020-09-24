@@ -172,3 +172,11 @@ Then serve the test application and open it in your browser:
 ```
 npm start
 ```
+
+## Contributors
+- [Ishan Mahajan](https://github.com/ishan123456789)
+- [NickShcherba](https://github.com/shcherbanikolay)
+- [Mathis Hofer](https://github.com/hupf)
+- [James Manners](https://github.com/jmannau)
+- [Jason K.](https://github.com/lonerzzz)
+- [Elle](https://github.com/LuigiElleBalotta)
