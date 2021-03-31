@@ -13,9 +13,9 @@
     "url": "https://github.com/lula/ngx-summernote.git"
   },
   "peerDependencies": {
-    "@angular/common": "^8.0.0||^10.0.0",
-    "@angular/core": "^8.0.0||^10.0.0",
-    "@angular/forms": "^8.0.0||^10.0.0",
-    "summernote": "^0.8.10"
+    "@angular/common": "^8.0.0 - ^11.0.0",
+    "@angular/core": "^8.0.0 - ^11.0.0",
+    "@angular/forms": "^8.0.0 - ^11.0.0",
+    "summernote": ">=0.8.10"
   }
 }
