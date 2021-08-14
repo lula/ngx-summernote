@@ -194,11 +194,13 @@ export class NgxSummernoteDirective
           modelContent = returnedHtml;
         }
       }
-      this._oldModel = modelContent;
-      // Update summernoteModel
-      this.summernoteModelChange.emit(modelContent);
-      // Update form model.
-      this.onChange(content);
+      if (this._oldModel !== modelContent) {
+        this._oldModel = modelContent;
+        // Update summernoteModel
+        this.summernoteModelChange.emit(modelContent);
+        // Update form model.
+        this.onChange(content);
+      }
     });
   }
 
