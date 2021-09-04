@@ -332,7 +332,7 @@ export class NgxSummernoteDirective
         const data = new FormData();
         data.append('image', file);
         const obs = this.http
-          .post(this._options.uploadImagePath, data)
+          .post(this._options.uploadImagePath, data, this._options.uploadImageRequestOptions)
           .pipe(
             map(
               (response: { path: string }) =>
