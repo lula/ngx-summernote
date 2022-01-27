@@ -12,6 +12,7 @@ Compatibility:
 
 Angular | ngx-summernote
 ------- | --------------
+13      | 0.8.8
 12      | 0.8.5
 11      | 0.8.4
 10      | 0.8.x
