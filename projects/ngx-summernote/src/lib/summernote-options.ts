@@ -26,4 +26,5 @@ export interface SummernoteOptions {
   airMode?: boolean;
   popover?: any;
   dialogsInBody?: boolean;
+  lang?: string;
 }
