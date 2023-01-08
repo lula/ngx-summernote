@@ -27,4 +27,5 @@ export interface SummernoteOptions {
   popover?: any;
   dialogsInBody?: boolean;
   lang?: string;
+  fontNamesIgnoreCheck?: string[];
 }
