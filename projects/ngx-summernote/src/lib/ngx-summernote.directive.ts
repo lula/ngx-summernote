@@ -158,7 +158,7 @@ export class NgxSummernoteDirective
     if (this._editorInitialized) {
       this._$element.summernote('code', content);
     } else {
-      this._$element.html(content);
+      this._$element?.html(content);
     }
   }
 
