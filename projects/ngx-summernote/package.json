@@ -12,10 +12,13 @@
     "type": "git",
     "url": "https://github.com/lula/ngx-summernote.git"
   },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
-    "@angular/common": "8.x - 15.x",
-    "@angular/core": "8.x - 15.x",
-    "@angular/forms": "8.x - 15.x",
+    "@angular/common": "14.x - 16.x",
+    "@angular/core": "14.x - 16.x",
+    "@angular/forms": "14.x - 16.x",
     "summernote": ">=0.8.10"
   }
 }

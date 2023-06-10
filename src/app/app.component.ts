@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 
 declare var $;
@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
 
   html: string;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   config: any = {
     airMode: false,
     tabDisable: true,
@@ -80,8 +80,8 @@ export class AppComponent implements OnInit {
   }
 
   constructor(private sanitizer: DomSanitizer) {
-    this.form = new FormGroup({
-      html: new FormControl('', Validators.required),
+    this.form = new UntypedFormGroup({
+      html: new UntypedFormControl('', Validators.required),
     });
   }
 
