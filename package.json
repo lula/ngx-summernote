@@ -1,6 +1,6 @@
 {
   "name": "ngx-summernote-app",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "keywords": [
     "summernote",
     "angular"
@@ -10,7 +10,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:lib": "ng build --prod ngx-summernote && cp README.md LICENSE dist/ngx-summernote",
-    "publish": "cd dist/ngx-summernote && npm publish",
+    "publish": "npm run build:lib && cd dist/ngx-summernote && npm publish",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
