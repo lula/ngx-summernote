@@ -112,7 +112,7 @@ export class NgxSummernoteDirective
         changes.ngxSummernoteDisabled &&
         !changes.ngxSummernoteDisabled.firstChange &&
         changes.ngxSummernoteDisabled.currentValue !==
-          changes.ngxSummernoteDisabled.previousValue
+        changes.ngxSummernoteDisabled.previousValue
       ) {
         if (changes.ngxSummernoteDisabled.currentValue) {
           this._$element.summernote('disable');
@@ -131,8 +131,8 @@ export class NgxSummernoteDirective
   }
 
   // Begin ControlValueAccesor methods.
-  onChange = (_: any) => {};
-  onTouched = () => {};
+  onChange = (_: any) => { };
+  onTouched = () => { };
 
   // Form model content changed.
   writeValue(content: any): void {
@@ -156,9 +156,9 @@ export class NgxSummernoteDirective
     // this._$element.html(content);
 
     if (this._editorInitialized) {
-      this._$element.summernote('code', content);
+      this._$element ? this._$element.summernote('code', content) : undefined;
     } else {
-      this._$element.html(content);
+      this._$element ? this._$element.html(content) : undefined;
     }
   }
 
@@ -211,32 +211,32 @@ export class NgxSummernoteDirective
       return;
     }
 
-    this._$element.on('summernote.init', function() {
-      setTimeout(function() {
+    this._$element.on('summernote.init', function () {
+      setTimeout(function () {
         self.updateModel();
       }, 0);
     });
 
-    this._$element.on('summernote.change', function(
+    this._$element.on('summernote.change', function (
       event,
       contents,
       $editable
     ) {
-      setTimeout(function() {
+      setTimeout(function () {
         self.updateModel(contents);
       }, 0);
     });
 
-    this._$element.on('summernote.blur', function() {
-      setTimeout(function() {
+    this._$element.on('summernote.blur', function () {
+      setTimeout(function () {
         self.onTouched();
         self.blur.emit();
       }, 0);
     });
 
     if (this._options.immediateAngularModelUpdate) {
-      this._editor.on('keyup', function() {
-        setTimeout(function() {
+      this._editor.on('keyup', function () {
+        setTimeout(function () {
           self.updateModel();
         }, 0);
       });
