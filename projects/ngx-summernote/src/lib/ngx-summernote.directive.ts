@@ -4,11 +4,13 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
+  Inject,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -17,6 +19,7 @@ import { map } from 'rxjs/operators';
 
 import { SummernoteOptions } from './summernote-options';
 import { codeBlockButton } from './code-block.button';
+import { NGX_SUMMERNOTE_CONFIG } from './ngx-summernote.config';
 
 declare var $;
 
@@ -35,21 +38,7 @@ export class NgxSummernoteDirective
   implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   @Input() set ngxSummernote(options: SummernoteOptions) {
     if (options) {
-      if (!options.buttons) {
-        options.buttons = {};
-      }
-
-      options.callbacks = {
-        ...options.callbacks,
-        onImageUpload: files => this.uploadImage(files),
-        onMediaDelete: files =>
-          this.mediaDelete.emit({ url: $(files[0]).attr('src') })
-      };
-
-      // add custom buttons
-      options.buttons.codeBlock = codeBlockButton;
-
-      Object.assign(this._options, options);
+      this.setOptionsFromConfig(options);
     }
   }
 
@@ -86,7 +75,8 @@ export class NgxSummernoteDirective
   constructor(
     private el: ElementRef,
     private zone: NgZone,
-    private http: HttpClient
+    private http: HttpClient,
+    @Optional() @Inject(NGX_SUMMERNOTE_CONFIG) private summerNoteOptions: SummernoteOptions
   ) {
     const element: any = el.nativeElement;
 
@@ -100,6 +90,10 @@ export class NgxSummernoteDirective
     // this._$element = <any>$(element);
 
     this.zone = zone;
+
+    if (this.summerNoteOptions) {
+      this.setOptionsFromConfig(this.summerNoteOptions);
+    }
   }
 
   ngOnInit() {
@@ -212,7 +206,7 @@ export class NgxSummernoteDirective
     }
 
     this._$element.on('summernote.init', function () {
-      setTimeout(function () {
+      setTimeout(function() {
         self.updateModel();
       }, 0);
     });
@@ -222,21 +216,21 @@ export class NgxSummernoteDirective
       contents,
       $editable
     ) {
-      setTimeout(function () {
+      setTimeout(function() {
         self.updateModel(contents);
       }, 0);
     });
 
-    this._$element.on('summernote.blur', function () {
-      setTimeout(function () {
+    this._$element.on('summernote.blur', function() {
+      setTimeout(function() {
         self.onTouched();
         self.blur.emit();
       }, 0);
     });
 
     if (this._options.immediateAngularModelUpdate) {
-      this._editor.on('keyup', function () {
-        setTimeout(function () {
+      this._editor.on('keyup', function() {
+        setTimeout(function() {
           self.updateModel();
         }, 0);
       });
@@ -368,5 +362,26 @@ export class NgxSummernoteDirective
       };
       reader.onerror = error => console.error(error);
     }
+  }
+
+  /**
+   * Initialize the editor options with the provided summernote config.
+   */
+  private setOptionsFromConfig(options: SummernoteOptions) {
+    if (!options.buttons) {
+      options.buttons = {};
+    }
+
+    options.callbacks = {
+      ...options.callbacks,
+      onImageUpload: files => this.uploadImage(files),
+      onMediaDelete: files =>
+        this.mediaDelete.emit({ url: $(files[0]).attr('src') })
+    };
+
+    // add custom buttons
+    options.buttons.codeBlock = codeBlockButton;
+
+    Object.assign(this._options, options);
   }
 }
