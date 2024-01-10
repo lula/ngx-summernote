@@ -18,7 +18,7 @@ export interface SummernoteOptions {
     reportProgress?: boolean;
     responseType?: 'json';
     withCredentials?: boolean;
-  },
+  };
   toolbar?: any[];
   fontNames?: string[];
   callbacks?: any;

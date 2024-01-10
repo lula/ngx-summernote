@@ -56,10 +56,10 @@ import { NgxSummernoteModule } from 'ngx-summernote';
 export class AppModule { }
 ```
 
-Use `[ngxSummernote]` directive on an element to init Summernote editor:
+Use `ngxSummernote` directive on an element to init Summernote editor:
 
 ```html
-<div [ngxSummernote]></div>
+<div ngxSummernote></div>
 ```
 
 You may also configure Summernote with your own config:
@@ -91,6 +91,48 @@ export class AppComponent implements OnInit {
 ```
 
 See Summernote available initialization options [here](https://summernote.org/deep-dive/#initialization-options).
+
+You can also provide a global config (using the format from above) that will be used for all instances of ngx-summernote.
+This global config can still be overridden for specific instances with a custom config like described above.
+
+There are two options to provide a global config:
+
+1) Using the injection token
+```typescript
+{
+  provide: NGX_SUMMERNOTE_CONFIG,
+  useValue: config,
+}
+```
+
+2) Using the provide function
+```typescript
+provideNgxSummerNodeConfig(config)
+```
+
+If you want to use either of those options, you have to include them in the providers array of your module.
+```typescript
+import { NgxSummernoteModule, provideNgxSummerNodeConfig, SummernoteOptions } from 'ngx-summernote';
+
+const config: SummernoteOptions = {...} // Your config
+
+@NgModule({
+  ...
+  providers: [
+    // Provide global config using either of these two options:
+    // 1) The token 'NGX_SUMMERNOTE_CONFIG'
+    {
+      provide: NGX_SUMMERNOTE_CONFIG,
+      useValue: config,
+    }
+    // 2) The function 'provideNgxSummerNodeConfig'
+    provideNgxSummerNodeConfig(config)
+  ]
+  ...
+})
+export class AppModule {
+}
+```
 
 ## Viewer
 
