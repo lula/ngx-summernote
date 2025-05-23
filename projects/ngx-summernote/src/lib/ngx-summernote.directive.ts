@@ -29,7 +29,8 @@ declare var $;
       useExisting: forwardRef(() => NgxSummernoteDirective),
       multi: true
     }
-  ]
+  ],
+  standalone: false
 })
 export class NgxSummernoteDirective
   implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {

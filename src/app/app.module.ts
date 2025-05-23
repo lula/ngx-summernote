@@ -4,20 +4,19 @@ import { NgxSummernoteModule } from 'ngx-summernote';
 
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxSummernoteModule,
-    HttpClientModule
+    NgxSummernoteModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [provideHttpClient(withInterceptorsFromDi())]
 })
 export class AppModule { }

@@ -1,6 +1,6 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NgxSummernoteModule } from 'projects/ngx-summernote/src/lib/ngx-summernote.module';
 
@@ -9,12 +9,12 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        HttpClientModule,
         NgxSummernoteModule
       ],
       declarations: [
         AppComponent
       ],
+      providers: [provideHttpClient(withInterceptorsFromDi())]
     }).compileComponents();
   }));
 
