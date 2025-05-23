@@ -12,6 +12,7 @@ Compatibility:
 
 Angular | ngx-summernote
 ------- | --------------
+\> 19   | 1.1.0
 \> 14   | 1.0.0 (Ivy support)
 \> 14   | 0.9.0
 13      | 0.8.8
